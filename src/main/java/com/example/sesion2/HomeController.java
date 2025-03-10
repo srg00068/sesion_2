@@ -16,12 +16,12 @@ public class HomeController {
         return "home";
     }
 
-@GetMapping("/login")
+@GetMapping("/login") //Acceder a la página de login
 public String getMethodLogin() {
     return "login";
 }
 
-@GetMapping("/register")
+@GetMapping("/register") //Acceder a la página de registro
 public String getMethodRegister() {
     return "register";
 }
