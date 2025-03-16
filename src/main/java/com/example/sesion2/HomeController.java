@@ -1,5 +1,8 @@
 package com.example.sesion2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +18,11 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
+    private final List<Usuario> ArrayListUsuarios = new ArrayList<>();
 
 @GetMapping("/")
-    public String MetodoGetHTML() {   
+    public String MetodoGetHTML() {  
+ 
         return "home";
     }
 
@@ -54,6 +59,10 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
         model.addAttribute("password", password);
 
         return "tienda";
+
+    } else if(username.equals("admin") && password.equals("admin")){
+        model.addAttribute("usuarios", ArrayListUsuarios);
+       return "admin";
     }
 
     String errorMessage = "No existe ese usuario :(";
@@ -71,9 +80,17 @@ public String getMethodRegister(HttpServletRequest request, HttpServletResponse 
 }
 
 @PostMapping("/register")
-public String postMethodString(HttpServletRequest request, HttpServletResponse response) {
-    
-    return "entity";
-}
+public String postMethodString(HttpServletRequest request, HttpServletResponse response, Model model) {
+    String username = request.getParameter("username");
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
 
+    Usuario usuario = new Usuario(username, email, password);
+    ArrayListUsuarios.add(usuario);
+    model.addAttribute("usuarios", ArrayListUsuarios);
+
+    HttpSession session = request.getSession();
+
+    return "login";
+}
 }
