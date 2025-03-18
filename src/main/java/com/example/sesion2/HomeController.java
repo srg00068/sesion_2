@@ -3,6 +3,7 @@ package com.example.sesion2;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class HomeController {
     private final List<Usuario> ArrayListUsuarios = new ArrayList<>();
+
+@Autowired
+    UsuariosDaoInterface dao;
+
 
 @GetMapping("/")
     public String MetodoGetHTML() {  
@@ -50,18 +55,20 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
     String password = request.getParameter("password");
     
     if (username.equals("sergio") && password.equals("1234")) {
+        Usuario usuario = new Usuario("sergio", ".", "1234");
         HttpSession session = request.getSession();
         session.setAttribute("username", username);
         session.setAttribute("password", password);
 
         //Añado los astributos de la sesión a la siguiente pagina
-        model.addAttribute("username", username);
-        model.addAttribute("password", password);
+        model.addAttribute("usuario", usuario );
 
         return "tienda";
 
     } else if(username.equals("admin") && password.equals("admin")){
-        model.addAttribute("usuarios", ArrayListUsuarios);
+        
+        List<Usuario> listaUsers = dao.leeUsuario();
+        model.addAttribute("usuarios", listaUsers);
        return "admin";
     }
 
@@ -86,11 +93,24 @@ public String postMethodString(HttpServletRequest request, HttpServletResponse r
     String password = request.getParameter("password");
 
     Usuario usuario = new Usuario(username, email, password);
+
+    //UsuariosDaoJdbc dao = new UsuariosDaoJdbc();
+    dao.insertaUsuario(usuario);
+
     ArrayListUsuarios.add(usuario);
     model.addAttribute("usuarios", ArrayListUsuarios);
 
-    HttpSession session = request.getSession();
-
     return "login";
 }
+
+@GetMapping("/tienda")
+public String getMethoTienda(HttpServletRequest request, HttpServletResponse response) {
+
+
+    return "tienda";
 }
+
+
+
+}
+
