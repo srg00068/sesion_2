@@ -8,9 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.sesion2.UsuariosDaoJdbc.EstadoUsuario;
+
+import ch.qos.logback.core.joran.conditional.IfAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -54,7 +55,7 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     
-    if (username.equals("sergio") && password.equals("1234")) {
+    /*if (username.equals("sergio") && password.equals("1234")) {
         Usuario usuario = new Usuario("sergio", ".", "1234");
         HttpSession session = request.getSession();
         session.setAttribute("username", username);
@@ -71,6 +72,25 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
         model.addAttribute("usuarios", listaUsers);
        return "admin";
     }
+       */
+
+//Con JDBC 
+UsuariosDaoJdbc.EstadoUsuario resultado = dao.buscaUsuario(username, password);
+Usuario usuario = dao.devueleUsuario(username, password);
+HttpSession session = request.getSession();
+session.setAttribute("username", username);
+session.setAttribute("password", password);
+
+if (resultado == EstadoUsuario.ADMIN) {
+
+    List<Usuario> listaUsers = dao.leeUsuario();
+    model.addAttribute("usuarios", listaUsers);
+    return "admin";
+
+}else if (resultado == EstadoUsuario.NORMAL) {
+    model.addAttribute("usuario", usuario);
+    return "tienda";
+}
 
     String errorMessage = "No existe ese usuario :(";
     model.addAttribute("errorMessage", errorMessage);
@@ -93,19 +113,15 @@ public String postMethodString(HttpServletRequest request, HttpServletResponse r
     String password = request.getParameter("password");
 
     Usuario usuario = new Usuario(username, email, password);
-
-    //UsuariosDaoJdbc dao = new UsuariosDaoJdbc();
     dao.insertaUsuario(usuario);
 
-    ArrayListUsuarios.add(usuario);
     model.addAttribute("usuarios", ArrayListUsuarios);
 
     return "login";
 }
 
 @GetMapping("/tienda")
-public String getMethoTienda(HttpServletRequest request, HttpServletResponse response) {
-
+public String getMethodTienda(HttpServletRequest request, HttpServletResponse response) {
 
     return "tienda";
 }

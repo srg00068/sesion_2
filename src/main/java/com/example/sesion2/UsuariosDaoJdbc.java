@@ -1,6 +1,5 @@
 package com.example.sesion2;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -38,9 +37,37 @@ public class UsuariosDaoJdbc implements UsuariosDaoInterface {
 
     @Override
     public boolean insertaUsuario(Usuario usuario) {
-        String sql = "insert into users (username,email,password) values(?, ?, ?)";
-        int nfilas = this.jdbcTemplate.update(sql, usuario.getUsername(), usuario.getEmail(), usuario.getPassword());
+        String sql = "insert into users (username,email,password, role) values(?, ?, ?, ?)";
+        int nfilas = this.jdbcTemplate.update(sql, usuario.getUsername(), usuario.getEmail(), usuario.getPassword(),"normal");
             return (nfilas == 1);
+    }
+
+    @Override
+    public EstadoUsuario buscaUsuario(String user, String password) {
+        String sql = "select * from users where username = ? and password = ?";
+        List<Usuario> usuarios = this.jdbcTemplate.query(sql, mapper, user, password);
+        if (usuarios.isEmpty()) {
+            return EstadoUsuario.NO_ENCONTRADO;
+        }
+
+        Usuario usuario = usuarios.get(0);
+        if ("admin".equals(usuario.getRole())) {
+            return EstadoUsuario.ADMIN;
+        }else{
+            return EstadoUsuario.NORMAL;
+        }
+    }
+
+    public enum EstadoUsuario {
+        ADMIN, NORMAL, NO_ENCONTRADO
+    }
+
+    @Override
+    public Usuario devueleUsuario(String user, String password) {
+        String sql = "select * from users where username = ? and password = ?";
+        List<Usuario> usuarios = this.jdbcTemplate.query(sql, mapper, user, password);
+        Usuario usuario = usuarios.get(0);
+        return usuario;
         
     }
 
