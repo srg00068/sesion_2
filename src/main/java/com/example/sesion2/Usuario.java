@@ -15,11 +15,11 @@ public class Usuario implements Serializable{
         role="";
     }
 
-    public Usuario(String username, String email, String password){
+    public Usuario(String username, String email, String password, String role){
         this.username = username;
         this.email=email;
         this.password=password;
-        this.role="normal";
+        this.role=role;
     }
 
     public void setUsername(String username) {

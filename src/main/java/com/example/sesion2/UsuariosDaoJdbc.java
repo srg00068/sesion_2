@@ -24,13 +24,15 @@ public class UsuariosDaoJdbc implements UsuariosDaoInterface {
         Usuario usuario = new Usuario();
         usuario.setUsername(rs.getString("username"));
         usuario.setPassword(rs.getString("password"));
+        usuario.setEmail((rs.getString("email")));
+        usuario.setRole(rs.getString("role"));
         return usuario;
     };
 
 
     @Override
     public List<Usuario> leeUsuario() {
-        String sql = "SELECT username, password FROM users";
+        String sql = "SELECT * FROM users";
         List<Usuario> usuarios = this.jdbcTemplate.query(sql, mapper);
         return usuarios;      
     }
@@ -46,15 +48,24 @@ public class UsuariosDaoJdbc implements UsuariosDaoInterface {
     public EstadoUsuario buscaUsuario(String user, String password) {
         String sql = "select * from users where username = ? and password = ?";
         List<Usuario> usuarios = this.jdbcTemplate.query(sql, mapper, user, password);
+
         if (usuarios.isEmpty()) {
             return EstadoUsuario.NO_ENCONTRADO;
         }
-
+        
         Usuario usuario = usuarios.get(0);
-        if ("admin".equals(usuario.getRole())) {
-            return EstadoUsuario.ADMIN;
-        }else{
-            return EstadoUsuario.NORMAL;
+
+        if (usuario.getRole() == null) {
+            return EstadoUsuario.NO_ENCONTRADO; 
+        }
+
+        switch (usuario.getRole()) {
+            case "admin":
+                return EstadoUsuario.ADMIN;
+            case "normal":
+                return EstadoUsuario.NORMAL;
+            default:
+                return EstadoUsuario.NO_ENCONTRADO;
         }
     }
 
@@ -66,9 +77,11 @@ public class UsuariosDaoJdbc implements UsuariosDaoInterface {
     public Usuario devueleUsuario(String user, String password) {
         String sql = "select * from users where username = ? and password = ?";
         List<Usuario> usuarios = this.jdbcTemplate.query(sql, mapper, user, password);
+        if (usuarios.isEmpty()) {
+            return new Usuario();
+        }
         Usuario usuario = usuarios.get(0);
         return usuario;
-        
     }
 
 }

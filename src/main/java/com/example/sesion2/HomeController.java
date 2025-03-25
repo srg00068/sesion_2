@@ -77,28 +77,31 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
 //Con JDBC 
 UsuariosDaoJdbc.EstadoUsuario resultado = dao.buscaUsuario(username, password);
 Usuario usuario = dao.devueleUsuario(username, password);
-HttpSession session = request.getSession();
+/*HttpSession session = request.getSession();
 session.setAttribute("username", username);
-session.setAttribute("password", password);
+session.setAttribute("password", password);*/
 
-if (resultado == EstadoUsuario.ADMIN) {
-
+switch (resultado) {
+    case ADMIN:
     List<Usuario> listaUsers = dao.leeUsuario();
     model.addAttribute("usuarios", listaUsers);
     return "admin";
-
-}else if (resultado == EstadoUsuario.NORMAL) {
+        
+    case NORMAL:
     model.addAttribute("usuario", usuario);
     return "tienda";
-}
 
+    case NO_ENCONTRADO:
     String errorMessage = "No existe ese usuario :(";
     model.addAttribute("errorMessage", errorMessage);
     System.out.println("Error al logearse");
-
     return "login";
-}
 
+    default:
+    return "login";
+  
+}
+}
 
 @GetMapping("/register") //Acceder a la página de registro
 public String getMethodRegister(HttpServletRequest request, HttpServletResponse response) {
@@ -111,8 +114,9 @@ public String postMethodString(HttpServletRequest request, HttpServletResponse r
     String username = request.getParameter("username");
     String email = request.getParameter("email");
     String password = request.getParameter("password");
+    String role = "normal";
 
-    Usuario usuario = new Usuario(username, email, password);
+    Usuario usuario = new Usuario(username, email, password, role);
     dao.insertaUsuario(usuario);
 
     model.addAttribute("usuarios", ArrayListUsuarios);
