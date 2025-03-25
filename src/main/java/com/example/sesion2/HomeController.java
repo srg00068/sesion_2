@@ -54,25 +54,6 @@ public String getMethodLogin(HttpServletRequest request, Model model) {
 public String postMethodLogin(HttpServletRequest request, Model model) {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    
-    /*if (username.equals("sergio") && password.equals("1234")) {
-        Usuario usuario = new Usuario("sergio", ".", "1234");
-        HttpSession session = request.getSession();
-        session.setAttribute("username", username);
-        session.setAttribute("password", password);
-
-        //Añado los astributos de la sesión a la siguiente pagina
-        model.addAttribute("usuario", usuario );
-
-        return "tienda";
-
-    } else if(username.equals("admin") && password.equals("admin")){
-        
-        List<Usuario> listaUsers = dao.leeUsuario();
-        model.addAttribute("usuarios", listaUsers);
-       return "admin";
-    }
-       */
 
 //Con JDBC 
 UsuariosDaoJdbc.EstadoUsuario resultado = dao.buscaUsuario(username, password);

@@ -66,22 +66,20 @@
     <div class="col-sm-4">
       <div class="panel panel-primary">
         <div class="panel-heading">Usuario</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer" th:text="${usuario.username}"></div>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-danger">
         <div class="panel-heading">Contraseña</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer" th:text="${usuario.password}"></div>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-success">
-        <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
+        <div class="panel-heading">Correo electronico</div>
+        <div class="panel-footer" th:text="${usuario.email}"></div>
+        <style>.pp-58TL9FBKKB6PG{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
       </div>
     </div>
   </div>
@@ -92,8 +90,16 @@
     <div class="col-sm-4">
       <div class="panel panel-primary">
         <div class="panel-heading">BLACK FRIDAY DEAL</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="sofa.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
+
+        <style>.pp-38JWQTLP4MM6J{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
+        <form action="https://www.sandbox.paypal.com/ncp/payment/38JWQTLP4MM6J" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+          <input class="pp-38JWQTLP4MM6J" type="submit" value="Comprar ahora" />
+          <img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
+          <section> Tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+        </form>
+
       </div>
     </div>
     <div class="col-sm-4"> 
@@ -101,6 +107,13 @@
         <div class="panel-heading">BLACK FRIDAY DEAL</div>
         <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
+
+        <form action="https://www.sandbox.paypal.com/ncp/payment/58TL9FBKKB6PG" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+          <input class="pp-58TL9FBKKB6PG" type="submit" value="Comprar ahora" />
+          <img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
+          <section> Tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+        </form>
+
       </div>
     </div>
     <div class="col-sm-4"> 
