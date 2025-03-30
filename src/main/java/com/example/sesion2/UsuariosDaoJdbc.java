@@ -41,7 +41,7 @@ public class UsuariosDaoJdbc implements UsuariosDaoInterface {
     public boolean insertaUsuario(Usuario usuario) {
         String sql = "insert into users (username,email,password, role) values(?, ?, ?, ?)";
         int nfilas = this.jdbcTemplate.update(sql, usuario.getUsername(), usuario.getEmail(), usuario.getPassword(),"normal");
-            return (nfilas == 1);
+            return (nfilas == 1); //Indica inserción exitosa
     }
 
     @Override

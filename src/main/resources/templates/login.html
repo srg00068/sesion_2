@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <h2 th:text="${errorMessage}"></h2>
-
+    
     <div class="login-container">
         <h2>Iniciar Sesión</h2>
-        <form action="login" method="post">
+        <form action="login" method="post" class="formulario">
             <label for="username">Usuario:</label>
             <input type="text" id="username" name="username" required> <br><br>
             

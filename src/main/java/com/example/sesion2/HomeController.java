@@ -15,6 +15,10 @@ import ch.qos.logback.core.joran.conditional.IfAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 
 
@@ -38,13 +42,29 @@ public String getMethodLogin(HttpServletRequest request, Model model) {
     
 
     if (session != null) {
-        String username = (String)session.getAttribute("username");
-        String password = (String) session.getAttribute("password");
+        Usuario usuario = (Usuario)session.getAttribute("usuario");
+        UsuariosDaoJdbc.EstadoUsuario resultado = dao.buscaUsuario(usuario.getUsername(), usuario.getPassword());
         
-        model.addAttribute("username", username);
-        model.addAttribute("password", password);
-
-        return "tienda";
+        switch (resultado) {
+            case ADMIN:
+            List<Usuario> listaUsers = dao.leeUsuario();
+            model.addAttribute("usuarios", listaUsers);
+            return "admin";
+                
+            case NORMAL:
+            model.addAttribute("usuario", usuario);
+            return "tienda";
+        
+            case NO_ENCONTRADO:
+            String errorMessage = "No existe ese usuario :(";
+            model.addAttribute("errorMessage", errorMessage);
+            System.out.println("Error al logearse");
+            return "login";
+        
+            default:
+            return "login";
+          
+        }
     }
 
     return "login";
@@ -58,9 +78,10 @@ public String postMethodLogin(HttpServletRequest request, Model model) {
 //Con JDBC 
 UsuariosDaoJdbc.EstadoUsuario resultado = dao.buscaUsuario(username, password);
 Usuario usuario = dao.devueleUsuario(username, password);
-/*HttpSession session = request.getSession();
-session.setAttribute("username", username);
-session.setAttribute("password", password);*/
+
+HttpSession session = request.getSession();
+session.setAttribute("usuario", usuario);
+
 
 switch (resultado) {
     case ADMIN:
@@ -110,6 +131,27 @@ public String getMethodTienda(HttpServletRequest request, HttpServletResponse re
 
     return "tienda";
 }
+
+@GetMapping("/pagohecho")
+public String getPagoHecho() {
+    
+    return "pagohecho";
+}
+
+@PostMapping("/pagohecho")
+public String postPagoHecho(HttpServletRequest request, Model model) {
+    HttpSession session = request.getSession(false);
+
+    if (session != null) {
+        Usuario usuario = (Usuario)session.getAttribute("usuario");
+        model.addAttribute("usuario", usuario);
+
+        return "tienda";
+    }
+    return "login";
+}
+
+
 
 
 
