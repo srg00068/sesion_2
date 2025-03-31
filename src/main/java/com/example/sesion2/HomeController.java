@@ -9,16 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.sesion2.UsuariosDaoJdbc.EstadoUsuario;
-
-import ch.qos.logback.core.joran.conditional.IfAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 
 
@@ -63,10 +56,8 @@ public String getMethodLogin(HttpServletRequest request, Model model) {
         
             default:
             return "login";
-          
         }
     }
-
     return "login";
 }
 
@@ -150,10 +141,5 @@ public String postPagoHecho(HttpServletRequest request, Model model) {
     }
     return "login";
 }
-
-
-
-
-
 }
 
